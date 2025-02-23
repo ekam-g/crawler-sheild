@@ -6,11 +6,11 @@ import (
 	"os"
 
 	"github.com/RedactedDog/crawler/src/Crawler"
-	Deveniantart "github.com/RedactedDog/crawler/src/Crawler/DeveniantArt"
+	"github.com/RedactedDog/crawler/src/Crawler/Amazon"
 )
 
 func main() {
-	data, err := Deveniantart.Scrape()
+	data, err := Amazon.FindTop50("shirts")
 	if err != nil {
 		log.Fatalln(err)
 	}
