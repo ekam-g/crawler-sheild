@@ -33,6 +33,10 @@ func main() {
 	rtr.GET("settings", Auth.IsAuthenticated, func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home/settings.gohtml", gin.H{})
 	})
+	rtr.GET("upload", Auth.IsAuthenticated, func(c *gin.Context) {
+		c.HTML(http.StatusOK, "upload/upload.gohtml", gin.H{})
+	})
+
 	rtr.GET("imgAlert", Auth.IsAuthenticated, func(c *gin.Context) {
 		c.File("./shirt.jpg")
 	})
