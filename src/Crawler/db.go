@@ -90,6 +90,21 @@ func AddImageCustomer(image []byte, customer string) error {
 	return nil
 }
 
+func GetImageForCustomer(customer string, what int64) ([]byte, error) {
+	c := client() // Initialize Redis client
+	defer c.Close()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Get all images from the list
+	image, err := c.LIndex(ctx, customer+":IMG", what).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	return []byte(image), nil
+}
+
 func GetAllImagesForCustomer(customer string) ([][]byte, error) {
 	c := client()
 	defer c.Close()
