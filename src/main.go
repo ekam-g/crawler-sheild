@@ -336,6 +336,7 @@ func main() {
 			return
 		}
 		Crawler.DeleteImageConflict(Crawler.GetUser(), int64(num))
+		c.Header("HX-Refresh", "true")
 
 		// Return just a part of the page (unselect)
 		c.HTML(200, "home/unselect.gohtml", gin.H{})
