@@ -177,10 +177,16 @@ func main() {
 			return
 		}
 
+		data, err := Crawler.GetAlertTimestamp(Crawler.GetUser(), int64(num))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			return
+		}
+
 		// Return just a part of the page (unselect)
 		c.HTML(200, "home/alert.gohtml", gin.H{
 			"index":   num,
-			"website": "hello",
+			"website": data[0],
 		})
 	})
 	rtr.GET("/unload-alert", Auth.IsAuthenticated, func(c *gin.Context) {
