@@ -212,8 +212,5 @@ func main() {
 		}
 		Crawler.AddImageCustomer(data, Crawler.GetUser())
 	})
-	// rtr.GET("user", Auth.IsAuthenticated, func(ctx *gin.Context) {
-
-	// })
 	rtr.Run(":8080")
 }
