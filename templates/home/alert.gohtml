@@ -1,0 +1,26 @@
+{{ define "home/alert.gohtml" }}
+<div id="alert" class="bg-[rgba(255,255,255,0.11)] h-[calc(100vh-10rem)] max-w-[calc(100vw-30rem)] w-full
+            fixed right-5 top-31 font-bold text-gray-100 rounded-br-3xl
+            border-0 rounded-tr-3xl">
+    <h1 class="cursor-default text-3xl max-w-[27rem] w-full relative left-5 top-5 font-bold text-gray-100
+                border-0 drop-shadow-xl">
+        Alert from {{.website}}
+    </h1>
+
+    <div class="space-x-2 fixed right-15">
+        <button class="cursor-pointer font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300 bg-green-700 text-gray-300 hover:bg-green-600 hover:text-white">
+            Accept
+        </button>
+        <button class="cursor-pointer font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300 bg-red-700 text-gray-300 hover:bg-red-600 hover:text-white">
+            Ignore
+        </button>
+    </div>
+
+    <div class="flex justify-center gap-6 mt-4 w-full p-4">
+        <div class="bg-[rgba(255,255,255,0.06)] h-[calc(100vh-17rem)] w-1/2 rounded-3xl p-4 m-4">
+        </div>
+        <div class="bg-[rgba(255,255,255,0.06)] h-[calc(100vh-17rem)] w-1/2 rounded-3xl p-4 m-4">
+        </div>
+    </div>
+</div>
+{{ end }}

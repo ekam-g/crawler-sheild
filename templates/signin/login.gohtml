@@ -1,0 +1,43 @@
+{{ define "signin/login.gohtml" }}
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="/assets/output.css" rel="stylesheet">
+	<title>Login</title>
+</head>
+
+<body class="bg-[#121212]">
+<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 bg-[rgba(255,255,255,0.06)]
+	relative flex h-16 items-center justify-between rounded-b-3xl ">
+	<button type="button" class="h-1/2 relative flex items-center justify-center border-0
+        hover:h-2/3 transition-all duration-100 ease-linear">
+		<img src="/assets/images/google.png" class="h-5/6" alt="Crawler">
+	</button>
+	<button type="button" class="m-button h-1/2">
+		&nbsp;Dashboard&nbsp;
+	</button>
+	<button type="button" class="m-button h-1/2">
+		&nbsp;Upload&nbsp;
+	</button>
+	<button type="button" class="m-button h-1/2">
+		<img src="/assets/images/settings-icon.png" class="h-1/2 m-3" alt="Settings">Settings&nbsp;&nbsp;
+	</button>
+</div>
+	<div class="relative flex items-center justify-center h-full">
+		<div class="border-1 border-[#0784b5] rounded-4xl h-1/8 w-1/4 bg-[rgba(255,255,255,0.06)]">
+			<h1 class="font-bold text-4xl text-center text-[#0784b5] m-2">
+				Login.
+			</h1>
+
+			<div class="relative flex items-center justify-center h-1/2 w-11/12 mx-auto">
+				<button type="button" class="hl-button h-1/2 w-1/2">
+					<img src="/assets/images/google.png" class="h-3/5 m-3" alt="Google logo"> Continue with Google
+				</button>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
+{{ end }}

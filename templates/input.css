@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+@layer components {
+    .m-button {
+        @apply
+        relative flex items-center justify-center mx-auto text-[min(min(3vw,1.2rem),2vh)] border-0
+        text-nowrap text-[#0784b5] font-bold
+        bg-none rounded-3xl
+        hover:bg-[rgba(255,255,255,0.11)] hover:rounded-xl
+        transition-all duration-100 ease-linear
+    }
+}

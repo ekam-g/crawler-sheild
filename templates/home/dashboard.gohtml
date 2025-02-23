@@ -1,0 +1,86 @@
+{{ define "home/dashboard.gohtml" }}
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/assets/output.css" rel="stylesheet">
+        <title>Login</title>
+        <script src="https://unpkg.com/htmx.org@1.7.0"></script> <!-- HTMX library -->
+    </head>
+
+    <body class="bg-[#121212]">
+    <div class="fixed top-0 w-full h-full">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 bg-[#2a2a2a]
+	relative flex h-16 items-center justify-between rounded-b-3xl ">
+            <button type="button" class="h-2/3 relative flex items-center justify-center border-0
+        hover:h-3/4 transition-all duration-100 ease-linear">
+                <img src="/assets/images/crawler-logo.png" class="h-full" alt="Crawler">
+            </button>
+            <a href="/dashboard"  class="m-button h-1/2 bg-[rgba(255,255,255,0.11)] rounded-xl">
+                &nbsp;<img src="/assets/images/dashboard-icon.png" class="h-5/6" alt="Dashboard">Dashboard&nbsp;
+            </a>
+            <a href="/upload" class="m-button h-1/2">
+                &nbsp;<img src="/assets/images/upload-icon.png" class="h-3/5" alt="Upload">Upload&nbsp;
+            </a>
+            <a href="/settings" class="m-button h-1/2">
+                &nbsp;<img src="/assets/images/settings-icon.png" class="h-3/5" alt="Settings">&nbsp;Settings&nbsp;
+            </a>
+        </div>
+    </diV>
+
+
+    <div class="w-full h-full">
+        <div class="flow-root float-left w-full h-full">
+            <h1 class="cursor-default text-4xl max-w-[27rem] w-full text-center fixed left-5 top-20 font-bold text-gray-100
+            border-2 rounded-t-3xl border-[#0784b5]">
+                {{.name}}'s Alerts
+            </h1>
+
+            <div class="bg-[rgba(255,255,255,0.06)] h-[calc(100vh-10rem)] max-w-[27rem] w-full fixed top-31
+            rounded-bl-3xl left-5 flex flex-col items-center py-3 space-y-3 overflow-y-scroll">
+
+                <button hx-get="/load-alert" hx-target="#alert" hx-swap="outerHTML"
+                        class="cursor-pointer w-7/8 h-[70px] shrink-0 py-2 flex justify-between items-start
+                        border-0 text-nowrap text-[#5d8c9e] bg-[rgba(255,255,255,0.06)] rounded-3xl
+                        hover:bg-[rgba(255,255,255,0.11)] hover:rounded-xl
+                        transition-all duration-100 ease-linear">
+                    <div class="flex flex-col">
+                        <span class="text-lg font-bold text-[#5d8c9e]">&nbsp;&nbsp;WEBSITE</span>
+                    </div>
+                    <span class="text-sm text-gray-500 self-center">TIMESTAMP&nbsp;</span>
+                </button>
+            </div>
+
+            <div id="alert" class="bg-[rgba(255,255,255,0.02)] h-[calc(100vh-10rem)] max-w-[calc(100vw-30rem)] w-full
+            fixed right-5 top-31 font-bold text-gray-100 rounded-br-3xl
+            border-0 rounded-tr-3xl">
+                <h1 class="cursor-default text-3xl max-w-[27rem] w-full relative left-5 top-5 font-bold text-[rgba(255,255,255,0.50)]
+                border-0 drop-shadow-xl">
+                    Select Alert
+                </h1>
+
+                <div class="space-x-2 fixed right-15">
+                    <button class="font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300
+                    bg-[rgba(255,255,255,0.02)] text-[rgba(255,255,255,0.02)]">
+                        Accept
+                    </button>
+                    <button class="font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300
+                    bg-[rgba(255,255,255,0.02)] text-[rgba(255,255,255,0.02)]">
+                        Ignore
+                    </button>
+                </div>
+
+                <div class="flex justify-center gap-6 mt-4 w-full p-4">
+                    <div class="bg-[rgba(255,255,255,0.02)] h-[calc(100vh-17rem)] w-1/2 rounded-3xl p-4 m-4">
+                    </div>
+                    <div class="bg-[rgba(255,255,255,0.02)] h-[calc(100vh-17rem)] w-1/2 rounded-3xl p-4 m-4">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    </body>
+    </html>
+{{ end }}
