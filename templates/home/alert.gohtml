@@ -11,7 +11,7 @@
         <button class="cursor-pointer font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300 bg-green-700 text-gray-300 hover:bg-green-600 hover:text-white">
             Accept
         </button>
-        <button hx-get="/unload-alert" hx-target="#alert" hx-swap="outerHTML"
+        <button hx-get="/unload-alert?list={{.index}}" hx-target="#alert" hx-swap="outerHTML"
                 class="cursor-pointer font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300 bg-red-700 text-gray-300 hover:bg-red-600 hover:text-white">
             Ignore
         </button>
