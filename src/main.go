@@ -382,7 +382,7 @@ func main() {
 			"file": file.Filename,
 		})
 	})
-	rtr.POST("/deleteFile", Auth.IsAuthenticated, func(c *gin.Context) {
+	rtr.GET("/deleteFile", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Get the file from the form input
 		listNum := c.DefaultQuery("list", "0")
 		num, err := strconv.Atoi(listNum)

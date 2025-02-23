@@ -39,10 +39,13 @@
             rounded-b-3xl rounded-tr-3xl grid grid-cols-4 items-center py-3 px-3 space-y-3 space-x-3 overflow-y-scroll">
 
             {{range $index, $img := .imgs}}
-                <img src="/imgRefGet?list={{$index}}" alt=""
-                     class="relative shrink-1 py-2 px-2 border-0 drop-shadow-2xl bg-[rgba(255,255,255,0.06)] w-11/12 h-auto rounded-3xl
-                        hover:bg-[rgba(255,255,255,0.11)] hover:rounded-xl
+                <button hx-get="/deleteFile" hx-delete="this" hx-target="this"  class="hover:bg-[#ff0000] w-11/12 h-auto rounded-3xl">
+                    <img src="/imgRefGet?list={{$index}}" alt=""
+                         class="cursor-pointer opacity-100 relative shrink-1 py-2 px-2 border-0 drop-shadow-2xl bg-[rgba(255,255,255,0.06)] w-full h-auto rounded-3xl
+                        hover:bg-[rgba(255,255,255,0.06)] hover:rounded-xl hover:opacity-60
                         transition-all duration-100 ease-linear">
+                </button>
+
             {{end}}
         </div>
     </div>
