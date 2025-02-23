@@ -34,6 +34,10 @@ func main() {
 	rtr.GET("settings", Auth.IsAuthenticated, func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home/settings.gohtml", gin.H{})
 	})
+	rtr.GET("upload", Auth.IsAuthenticated, func(c *gin.Context) {
+		c.HTML(http.StatusOK, "upload/upload.gohtml", gin.H{})
+	})
+
 	rtr.GET("imgAlert", Auth.IsAuthenticated, func(c *gin.Context) {
 		listNum := c.DefaultQuery("list", "0")
 		num, err := strconv.Atoi(listNum)
@@ -56,7 +60,7 @@ func main() {
 	rtr.GET("imgRef", Auth.IsAuthenticated, func(c *gin.Context) {
 		c.File("./proxy-image.jpg")
 	})
-	rtr.GET("/load-alert", Auth.IsAuthenticated, func(c *gin.Context) {
+	rtr.GET("/load-alert<>", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Return just a part of the page (template alert)
 		c.HTML(200, "home/alert.gohtml", gin.H{
 			"website": "AMAZON",
@@ -65,6 +69,16 @@ func main() {
 	rtr.GET("/unload-alert", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Return just a part of the page (unselect)
 		c.HTML(200, "home/unselect.gohtml", gin.H{})
+	})
+	rtr.GET("/alert-list", Auth.IsAuthenticated, func(c *gin.Context) {
+		data, err := Crawler.GetAlertTimestamps(Crawler.GetUser())
+		if err != nil {
+			log.Fatalf("There was an error dumbass: %v", err)
+		}
+		// Return just a part of the page (unselect)
+		c.HTML(200, "home/alert-list.gohtml", gin.H{
+			"alerts": data,
+		})
 	})
 	// rtr.GET("user", Auth.IsAuthenticated, func(ctx *gin.Context) {
 
