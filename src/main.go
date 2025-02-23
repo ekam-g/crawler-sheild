@@ -109,7 +109,7 @@ func main() {
 
 		// Pass the encoded images to the template
 		c.HTML(http.StatusOK, "library/libraryPage.gohtml", gin.H{
-			"imgs": goodImages, // Use base64-encoded images
+			"imgs": base64Images, // Use base64-encoded images
 		})
 	})
 
@@ -305,7 +305,13 @@ func main() {
 			return
 		}
 		Crawler.AddImageCustomer(data, Crawler.GetUser())
-		//c.HTML(http.StatusOK, "upload/uploadApprove.gohtml", gin.H{})
+		c.HTML(http.StatusOK, "upload/uploadApprove.gohtml", gin.H{
+			"file": file.Filename,
+		})
+	})
+	rtr.GET("/uploadButton", Auth.IsAuthenticated, func(c *gin.Context) {
+		// Return just a part of the page (upload button)
+		c.HTML(http.StatusOK, "upload/uploadButton.gohtml", gin.H{})
 	})
 	rtr.Run(":8080")
 }
