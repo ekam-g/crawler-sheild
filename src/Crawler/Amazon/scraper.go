@@ -2,6 +2,7 @@ package Amazon
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -24,6 +25,14 @@ type Scraper struct {
 	userAgent string
 }
 
+// List of common user agents
+var userAgents = []string{
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0",
+	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15",
+}
+
 // NewScraper creates a new scraper instance with sensible defaults
 func NewScraper() *Scraper {
 	return &Scraper{
@@ -40,7 +49,7 @@ func (s *Scraper) ScrapeShirts(what string) ([]Product, error) {
 	products := make([]Product, 0, 100)
 
 	// Search URL for men's shirts on sale
-	searchURL := s.baseURL + "/s?k=" + what + "&rh=n%3A7141123011%2Cp_n_deal_type%3A23566065011"
+	searchURL := s.baseURL + "/s?k=" + what + "&s=exact-aware-popularity-rank&qid=1740306793&ref=sr_st_exact-aware-popularity-rank&ds=v1%3AAmHpVBGfprKKIslavORwcpJkRc9A%2FLueerQUpl4iWWU"
 
 	req, err := http.NewRequest("GET", searchURL, nil)
 	if err != nil {
@@ -48,9 +57,18 @@ func (s *Scraper) ScrapeShirts(what string) ([]Product, error) {
 	}
 
 	// Set headers to mimic a real browser
+	// Enhanced headers to appear more browser-like
 	req.Header.Set("User-Agent", s.userAgent)
-	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-	req.Header.Set("Accept-Language", "en-US,en;q=0.5")
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
+	req.Header.Set("Accept-Encoding", "gzip, deflate, br")
+	req.Header.Set("Connection", "keep-alive")
+	req.Header.Set("Upgrade-Insecure-Requests", "1")
+	req.Header.Set("Sec-Fetch-Dest", "document")
+	req.Header.Set("Sec-Fetch-Mode", "navigate")
+	req.Header.Set("Sec-Fetch-Site", "none")
+	req.Header.Set("Sec-Fetch-User", "?1")
+	req.Header.Set("Cache-Control", "max-age=0")
 
 	resp, err := s.client.Do(req)
 	if err != nil {
@@ -62,11 +80,12 @@ func (s *Scraper) ScrapeShirts(what string) ([]Product, error) {
 		return nil, fmt.Errorf("received non-200 status code: %d", resp.StatusCode)
 	}
 
+	data, err := io.ReadAll(resp.Body)
+	fmt.Println(string(data))
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse HTML: %v", err)
 	}
-
 	// Find product listings
 	doc.Find("div[data-component-type='s-search-result']").Each(func(i int, s *goquery.Selection) {
 		if len(products) >= 50 {

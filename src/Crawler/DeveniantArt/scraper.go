@@ -1,11 +1,9 @@
-package main
+package Deveniantart
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -20,34 +18,16 @@ type ArtPost struct {
 	Timestamp time.Time `json:"timestamp"`
 }
 
-func main() {
+func Scrape() ([]ArtPost, error) {
 	searchTerm := "helluva boss"
-	fmt.Printf("Searching for: %s\n", searchTerm)
-
 	posts, err := scrapeDeviantArt(searchTerm, 50)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-
 	// Print results
-	fmt.Printf("\nFound %d posts:\n", len(posts))
-	for i, post := range posts {
-		fmt.Printf("\n=== Post %d ===\n", i+1)
-		fmt.Printf("Title: %s\n", post.Title)
-		fmt.Printf("Artist: %s\n", post.Artist)
-		fmt.Printf("URL: %s\n", post.URL)
-		fmt.Printf("Image URL: %s\n", post.ImageURL)
-		fmt.Printf("==================\n")
-	}
+	log.Printf("\nFound %d posts:\n", len(posts))
+	return posts, nil
 
-	// Save to JSON file
-	filename := "helluva_boss_posts.json"
-	err = saveToJSON(posts, filename)
-	if err != nil {
-		log.Printf("Error saving to JSON: %v", err)
-	} else {
-		fmt.Printf("\nSaved results to %s\n", filename)
-	}
 }
 
 func scrapeDeviantArt(searchTerm string, limit int) ([]ArtPost, error) {
@@ -129,20 +109,6 @@ func scrapeDeviantArt(searchTerm string, limit int) ([]ArtPost, error) {
 	}
 
 	return posts, nil
-}
-
-func saveToJSON(posts []ArtPost, filename string) error {
-	file, err := json.MarshalIndent(posts, "", "    ")
-	if err != nil {
-		return fmt.Errorf("error marshaling JSON: %v", err)
-	}
-
-	err = os.WriteFile(filename, file, 0644)
-	if err != nil {
-		return fmt.Errorf("error writing file: %v", err)
-	}
-
-	return nil
 }
 
 func min(a, b int) int {
