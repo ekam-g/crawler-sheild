@@ -39,6 +39,9 @@ func main() {
 			"name": Crawler.GetUser(),
 		})
 	})
+	rtr.GET("/favicon.ico", func(c *gin.Context) {
+		c.File("./assets/images/crawler-logo.png") // Correct path to your image
+	})
 	rtr.GET("settings", Auth.IsAuthenticated, func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home/settings.gohtml", gin.H{})
 	})
