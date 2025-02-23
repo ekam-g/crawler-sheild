@@ -31,7 +31,7 @@ func Start() {
 		rand.Seed(time.Now().UnixNano())
 		num := rand.Intn(11) + 5
 		// sleep 5 - 15 Hours
-		time.Sleep(time.Duration(num) * time.Minute)
+		time.Sleep(time.Duration(num) * time.Hour)
 
 		// cloths, err := Amazon.FindTop50(apparelTypes[apparelNum])
 		cloths, err := Deveniantart.Scrape()
