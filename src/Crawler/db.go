@@ -179,6 +179,24 @@ func DeleteImageConflict(customer string, what int64) error {
 	return nil
 }
 
+func DeleteImageCustomer(customer string, what int64) error {
+	c := client() // Initialize Redis client
+	defer c.Close()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Get all images from the list
+	image, err := c.LIndex(ctx, fmt.Sprintf("%s:%s", customer, IMGNAME), what).Result()
+	if err != nil {
+		return err
+	}
+	err = c.LRem(ctx, fmt.Sprintf("%s:%s", customer, IMGNAME), 1, image).Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetAlertConflict(customer string, what int64) ([]byte, error) {
 	c := client() // Initialize Redis client
 	defer c.Close()
