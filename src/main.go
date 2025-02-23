@@ -6,6 +6,7 @@ import (
 	"image/gif"
 	"image/jpeg"
 	"image/png"
+	"io"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -185,17 +186,31 @@ func main() {
 
 	rtr.GET("/upload-file", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Get the file from the form input
-		file, _ := c.FormFile("file")
+		file, err := c.FormFile("file")
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded"})
+			return
+		}
 		if file == nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "No file uploaded"})
 			return
 		}
-
 		ext := strings.ToLower(filepath.Ext(file.Filename))
 		if ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file type. Only image files are allowed."})
 			return
 		}
+		byteFile, err := file.Open()
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded"})
+			return
+		}
+		data, err := io.ReadAll(byteFile)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded"})
+			return
+		}
+		Crawler.AddImageCustomer(data, Crawler.GetUser())
 	})
 	// rtr.GET("user", Auth.IsAuthenticated, func(ctx *gin.Context) {
 
