@@ -24,7 +24,7 @@ func CheckCustomer(customer string) error {
 			for x := 0; x < len(amazonIMG); x += 1 {
 				simlar, _ := orb(amazonIMG[x], img)
 				if simlar {
-					err := AlertUser(customer, amazonIMG[x], img, "Amazon")
+					err := AlertUser(customer, amazonIMG[x], img, "Deviantart")
 					if err != nil {
 						log.Println(err)
 					}

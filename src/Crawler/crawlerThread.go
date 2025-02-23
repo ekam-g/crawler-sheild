@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/RedactedDog/crawler/src/Crawler/Amazon"
+	Deveniantart "github.com/RedactedDog/crawler/src/Crawler/DeveniantArt"
 )
 
 func Start() {
@@ -33,7 +33,8 @@ func Start() {
 		// sleep 5 - 15 Hours
 		time.Sleep(time.Duration(num) * time.Hour)
 
-		cloths, err := Amazon.FindTop50(apparelTypes[apparelNum])
+		// cloths, err := Amazon.FindTop50(apparelTypes[apparelNum])
+		cloths, err := Deveniantart.Scrape()
 		if err != nil {
 			continue
 		}
