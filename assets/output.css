@@ -416,6 +416,11 @@
   .self-center {
     align-self: center;
   }
+  .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .overflow-y-scroll {
     overflow-y: scroll;
   }
