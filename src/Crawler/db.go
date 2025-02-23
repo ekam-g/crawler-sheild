@@ -172,7 +172,12 @@ func GetAlertConflict(customer string, what int64) ([]byte, error) {
 	return []byte(image), nil
 }
 
-func GetAlertTimestamps(customer string) ([]string, error) {
+type AlertData struct {
+	Time    string
+	Website string
+}
+
+func GetAlertTimestamps(customer string) ([]AlertData, error) {
 	c := client() // Initialize Redis client
 	defer c.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -183,8 +188,21 @@ func GetAlertTimestamps(customer string) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve alerts: %w", err)
 	}
+	dataList := make([]AlertData, len(alerts))
+	for x := 0; x < len(alerts); x++ {
+		split := strings.Split(alerts[x], ",")
+		if len(split) >= 2 {
+			dataList[x] = AlertData{
+				Website: split[0],
+				Time:    split[1],
+			}
+		} else {
+			// Handle case where split doesn't produce expected result
+			return nil, fmt.Errorf("invalid alert format: %v", alerts[x])
+		}
+	}
 
-	return alerts, nil
+	return dataList, nil
 }
 
 func GetAlertTimestamp(customer string, index int64) ([]string, error) {
