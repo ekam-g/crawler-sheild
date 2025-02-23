@@ -2,7 +2,7 @@
 <div id="alist" class="bg-[rgba(255,255,255,0.06)] h-[calc(100vh-10rem)] max-w-[27rem] w-full fixed top-31
             rounded-bl-3xl left-5 flex flex-col items-center py-3 space-y-3 overflow-y-scroll">
     {{range $index, $alert := .alerts}}
-        <button hx-get="/load-alert<{{$index}}>" hx-target="#alert" hx-swap="outerHTML"
+        <button hx-get="/imgalert?list={{$index}}" hx-target="#alert" hx-swap="outerHTML"
                 class="cursor-pointer w-7/8 h-[70px] shrink-0 py-2 flex justify-between items-start
                         border-0 text-nowrap text-[#5d8c9e] bg-[rgba(255,255,255,0.06)] rounded-3xl
                         hover:bg-[rgba(255,255,255,0.11)] hover:rounded-xl

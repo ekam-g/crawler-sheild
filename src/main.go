@@ -8,8 +8,8 @@ import (
 	"image/png"
 	"log"
 	"net/http"
-	"strconv"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/RedactedDog/crawler/src/Auth"
@@ -167,12 +167,6 @@ func main() {
 
 		// Return the image data
 		c.Data(http.StatusOK, contentType, buf.Bytes())
-	})
-	rtr.GET("/load-alert<>", Auth.IsAuthenticated, func(c *gin.Context) {
-		// Return just a part of the page (template alert)
-		c.HTML(200, "home/alert.gohtml", gin.H{
-			"website": "AMAZON",
-		})
 	})
 	rtr.GET("/unload-alert", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Return just a part of the page (unselect)
