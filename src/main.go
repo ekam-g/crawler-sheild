@@ -329,6 +329,14 @@ func main() {
 		})
 	})
 	rtr.GET("/unload-alert", Auth.IsAuthenticated, func(c *gin.Context) {
+		listNum := c.DefaultQuery("list", "0")
+		num, err := strconv.Atoi(listNum)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Num"})
+			return
+		}
+		Crawler.DeleteImageConflict(Crawler.GetUser(), int64(num))
+
 		// Return just a part of the page (unselect)
 		c.HTML(200, "home/unselect.gohtml", gin.H{})
 	})
