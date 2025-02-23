@@ -31,7 +31,7 @@
 
 
     <div id="center">
-        <form id="fileUploadForm" action="/fileUpload" hx-swap="outerHTML" hx-target="#center" enctype="multipart/form-data" method="POST">
+        <form id="fileUploadForm" action="/uploadFile" hx-swap="outerHTML" hx-target="#center" enctype="multipart/form-data" method="POST">
             <div class="relative flex justify-center items-center w-full h-[80vh] mt-20">
                 <!-- Styled Upload Button -->
                 <label for="file-upload" class="cursor-pointer w-2/3 h-3/4 flex justify-center items-center text-3xl
@@ -42,7 +42,7 @@
                 </label>
 
                 <!-- Hidden file input -->
-                <input id="file-upload" name="upload" type="file" onchange="fileUploadForm.submit()" class="hidden" accept="image/*">
+                <input id="file-upload" name="upload" type="file" hx-trigger="change" class="hidden" accept="image/*" required>
             </div>
         </form>
     </div>
