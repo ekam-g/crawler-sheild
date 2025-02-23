@@ -395,6 +395,9 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err})
 			return
 		}
+		c.Header("HX-Refresh", "true")
+		c.Status(204)
+
 	})
 	rtr.GET("/uploadButton", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Return just a part of the page (upload button)
