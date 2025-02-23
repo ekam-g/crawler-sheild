@@ -207,7 +207,7 @@ func main() {
 		})
 	})
 
-	rtr.GET("/upload-file", Auth.IsAuthenticated, func(c *gin.Context) {
+	rtr.POST("/uploadFile", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Get the file from the form input
 		file, err := c.FormFile("file")
 		if err != nil {
@@ -234,6 +234,7 @@ func main() {
 			return
 		}
 		Crawler.AddImageCustomer(data, Crawler.GetUser())
+		//c.HTML(http.StatusOK, "upload/uploadApprove.gohtml", gin.H{})
 	})
 	rtr.Run(":8080")
 }
