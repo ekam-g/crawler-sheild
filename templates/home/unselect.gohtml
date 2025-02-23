@@ -1,0 +1,28 @@
+{{ define "home/unselect.gohtml" }}
+<div id="unselect" class="bg-[rgba(255,255,255,0.02)] h-[calc(100vh-10rem)] max-w-[calc(100vw-30rem)] w-full
+        fixed right-5 top-31 font-bold text-gray-100 rounded-br-3xl
+        border-0 rounded-tr-3xl">
+    <h1 class="cursor-default text-3xl max-w-[27rem] w-full relative left-5 top-5 font-bold text-[rgba(255,255,255,0.50)]
+            border-0 drop-shadow-xl">
+        Select Alert
+    </h1>
+
+    <div class="space-x-2 fixed right-15">
+        <button class="font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300
+                bg-[rgba(255,255,255,0.02)] text-[rgba(255,255,255,0.02)]">
+            Accept
+        </button>
+        <button class="font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300
+                bg-[rgba(255,255,255,0.02)] text-[rgba(255,255,255,0.02)]">
+            Ignore
+        </button>
+    </div>
+
+    <div class="flex justify-center gap-6 mt-4 w-full p-4">
+        <div class="bg-[rgba(255,255,255,0.02)] h-[calc(100vh-17rem)] w-1/2 rounded-3xl p-4 m-4">
+        </div>
+        <div class="bg-[rgba(255,255,255,0.02)] h-[calc(100vh-17rem)] w-1/2 rounded-3xl p-4 m-4">
+        </div>
+    </div>
+</div>
+{{ end }}
