@@ -41,12 +41,13 @@ func main() {
 	})
 	rtr.GET("/load-alert", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Return just a part of the page (template alert)
-		log.Println("Data being passed to template:", gin.H{
-			"website": "AMAZON",
-		})
 		c.HTML(200, "home/alert.gohtml", gin.H{
 			"website": "AMAZON",
 		})
+	})
+	rtr.GET("/unload-alert", Auth.IsAuthenticated, func(c *gin.Context) {
+		// Return just a part of the page (unselect)
+		c.HTML(200, "home/unselect.gohtml", gin.H{})
 	})
 	// rtr.GET("user", Auth.IsAuthenticated, func(ctx *gin.Context) {
 
