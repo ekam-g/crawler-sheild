@@ -382,9 +382,23 @@ func main() {
 			"file": file.Filename,
 		})
 	})
+	rtr.POST("/deleteFile", Auth.IsAuthenticated, func(c *gin.Context) {
+		// Get the file from the form input
+		listNum := c.DefaultQuery("list", "0")
+		num, err := strconv.Atoi(listNum)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Num"})
+			return
+		}
+		err = Crawler.DeleteImageCustomer(Crawler.GetUser(), int64(num))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			return
+		}
+	})
 	rtr.GET("/uploadButton", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Return just a part of the page (upload button)
 		c.HTML(http.StatusOK, "upload/uploadButton.gohtml", gin.H{})
 	})
-	rtr.Run(":8080")
+	rtr.Run("0.0.0.0:8080")
 }
