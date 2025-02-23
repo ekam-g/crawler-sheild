@@ -113,6 +113,7 @@ func main() {
 		// Pass the encoded images to the template
 		c.HTML(http.StatusOK, "library/libraryPage.gohtml", gin.H{
 			"imgs": data, // Use base64-encoded images
+			"name": Crawler.GetUser(),
 		})
 	})
 

@@ -11,7 +11,7 @@
 <body class="bg-[#121212]">
     <div class="fixed top-0 w-full h-full">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 bg-[#2a2a2a]
-        relative flex h-16 items-center justify-between rounded-b-3xl ">
+        relative flex h-14 items-center justify-between rounded-b-3xl ">
             <button type="button" class="h-2/3 relative flex items-center justify-center border-0
             hover:h-3/4 transition-all duration-100 ease-linear">
                 <img src="/assets/images/crawler-logo.png" class="h-full" alt="Crawler">
@@ -30,12 +30,17 @@
             </a>
         </div>
     </div>
-    <div class="flex justify-center items-center w-full h-full">
-        <div class="bg-[rgba(255,255,255,0.06)] h-[calc(100vh-10rem)] w-11/12 h-[80vh] fixed top-31
-            rounded-3xl left-5 grid items-center py-3 px-3 space-y-3 space-x-3 overflow-y-scroll">
+    <div class="relative flex justify-center items-center w-full h-[80vh] top-20">
+        <h1 class="cursor-default text-2xl max-w-[27rem] w-full text-center fixed left-5 top-22 font-bold text-gray-100
+            border-2 rounded-t-3xl border-[#0784b5]">
+            {{.name}}'s Library
+        </h1>
+        <div class="bg-[rgba(255,255,255,0.06)] h-[calc(100vh-10rem)] w-[calc(100vw-2.5rem)] h-[80vh] fixed left-5 top-31
+            rounded-b-3xl rounded-tr-3xl grid grid-cols-4 items-center py-3 px-3 space-y-3 space-x-3 overflow-y-scroll">
+
             {{range $index, $img := .imgs}}
-                <img src="/imgRef?list={{$index}}" alt=""
-                     class="shrink-0 py-2 px-2 border-0 bg-[rgba(255,255,255,0.06)] rounded-3xl
+                <img src="/imgRefGet?list={{$index}}" alt=""
+                     class="relative shrink-1 py-2 px-2 border-0 drop-shadow-2xl bg-[rgba(255,255,255,0.06)] w-11/12 h-auto rounded-3xl
                         hover:bg-[rgba(255,255,255,0.11)] hover:rounded-xl
                         transition-all duration-100 ease-linear">
             {{end}}
