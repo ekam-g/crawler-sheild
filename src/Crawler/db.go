@@ -124,12 +124,16 @@ func AlertUser(customer string, image, customerimage []byte, source string) erro
 	defer c.Close() // Close the connection when done (if not using a persistent client)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel() // Ensure context is canceled after use
-	len, err := c.SAdd(ctx, customer+"imagealerts", image).Result()
+	len, err := c.SAdd(ctx, customer+"imagealertsdup", image).Result()
 	if err != nil {
 		return err
 	}
 	if len == 0 {
 		return errors.New("image Already Added")
+	}
+	err = c.LPush(ctx, customer+"imagealerts", image).Err()
+	if err != nil {
+		return err
 	}
 	err = c.LPush(ctx, customer+"imagealertsconflict", customerimage).Err()
 	if err != nil {
@@ -151,7 +155,7 @@ func GetAlertImage(customer string, what int64) ([]byte, error) {
 	// Get all images from the list
 	image, err := c.LIndex(ctx, customer+"imagealerts", what).Result()
 	if err != nil {
-		return nil, fmt.Errorf("failed to retrieve images: %w", err)
+		return nil, err
 	}
 
 	return []byte(image), nil

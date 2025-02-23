@@ -42,7 +42,7 @@ func main() {
 		c.HTML(http.StatusOK, "home/settings.gohtml", gin.H{})
 	})
 	rtr.GET("upload", Auth.IsAuthenticated, func(c *gin.Context) {
-		c.HTML(http.StatusOK, "upload/upload.gohtml", gin.H{})
+		c.HTML(http.StatusOK, "upload/uploadPage.gohtml", gin.H{})
 	})
 
 	rtr.GET("imgRef", Auth.IsAuthenticated, func(c *gin.Context) {
