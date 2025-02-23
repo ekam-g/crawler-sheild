@@ -109,7 +109,7 @@ func main() {
 
 		// Pass the encoded images to the template
 		c.HTML(http.StatusOK, "library/libraryPage.gohtml", gin.H{
-			"imgs": base64Images, // Use base64-encoded images
+			"imgs": goodImages, // Use base64-encoded images
 		})
 	})
 

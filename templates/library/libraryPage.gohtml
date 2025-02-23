@@ -8,47 +8,15 @@
 </head>
 
 <body class="bg-[#121212]">
-    <div class="fixed top-0 w-full h-full">
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 bg-[#2a2a2a]
-        relative flex h-16 items-center justify-between rounded-b-3xl ">
-            <button type="button" class="h-2/3 relative flex items-center justify-center border-0
-            hover:h-3/4 transition-all duration-100 ease-linear">
-                <img src="/assets/images/crawler-logo.png" class="h-full" alt="Crawler">
-            </button>
-            <a href="/dashboard"  class="m-button h-1/2">
-                &nbsp;<img src="/assets/images/dashboard-icon.png" class="h-5/6" alt="Dashboard">Dashboard&nbsp;
-            </a>
-            <a href="/upload" class="m-button h-1/2">
-                &nbsp;<img src="/assets/images/upload-icon.png" class="h-3/5" alt="Upload">Upload&nbsp;
-            </a>
-            <a href="/settings" class="m-button h-1/2 bg-[rgba(255,255,255,0.11)] rounded-xl">
-                &nbsp;<img src="/assets/images/settings-icon.png" class="h-3/5" alt="Settings">&nbsp;Settings&nbsp;
-            </a>
-        </div>
-    </div>
 
-
-    <div class="container mx-auto p-6">
-        <h1 class="text-3xl font-bold text-center mb-6">Image Library</h1>
-
-        <!-- Image Grid -->
-        <div id="image-gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {{ range .imgs }}
-                <img src="{{ . }}" alt="Image"
-                     class="w-full h-auto rounded-lg shadow-lg transition-transform transform hover:scale-105">
-            {{ end }}
-        </div>
-
-        <!-- HTMX Button to Refresh Images -->
-        <div class="text-center mt-6">
-            <button hx-get="/library"
-                    hx-trigger="click"
-                    hx-target="#image-gallery"
-                    hx-swap="innerHTML"
-                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-md">
-                Refresh Images
-            </button>
-        </div>
+    <div class="bg-[rgba(255,255,255,0.06)] h-[calc(100vh-10rem)] w-[90vh] h-[80vh] fixed top-31
+        rounded-bl-3xl left-5 grid items-center py-3 space-y-3 overflow-y-scroll">
+        {{range .imgs}}
+            <img src="{{.}}"
+                 class="shrink-0 py-2 px-2 border-0 bg-[rgba(255,255,255,0.06)] rounded-3xl
+                    hover:bg-[rgba(255,255,255,0.11)] hover:rounded-xl
+                    transition-all duration-100 ease-linear">
+        {{end}}
     </div>
 
 </body>
