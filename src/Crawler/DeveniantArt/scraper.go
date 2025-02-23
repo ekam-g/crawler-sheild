@@ -19,7 +19,7 @@ type ArtPost struct {
 }
 
 func Scrape() ([]ArtPost, error) {
-	searchTerm := "helluva boss"
+	searchTerm := "pokemon"
 	posts, err := scrapeDeviantArt(searchTerm, 50)
 	if err != nil {
 		return nil, err
