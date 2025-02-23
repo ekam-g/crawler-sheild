@@ -347,6 +347,9 @@
   .w-\[calc\(100vw-2\.5rem\)\] {
     width: calc(100vw - 2.5rem);
   }
+  .w-auto {
+    width: auto;
+  }
   .w-full {
     width: 100%;
   }
@@ -388,6 +391,9 @@
   }
   .justify-center {
     justify-content: center;
+  }
+  .justify-start {
+    justify-content: flex-start;
   }
   .gap-6 {
     gap: calc(var(--spacing) * 6);
@@ -559,6 +565,9 @@
   }
   .text-nowrap {
     text-wrap: nowrap;
+  }
+  .text-ellipsis {
+    text-overflow: ellipsis;
   }
   .text-\[\#5d8c9e\] {
     color: #5d8c9e;
