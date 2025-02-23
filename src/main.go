@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/RedactedDog/crawler/src/Auth"
 	"github.com/RedactedDog/crawler/src/Crawler"
@@ -34,7 +35,23 @@ func main() {
 		c.HTML(http.StatusOK, "home/settings.gohtml", gin.H{})
 	})
 	rtr.GET("imgAlert", Auth.IsAuthenticated, func(c *gin.Context) {
-		c.File("./shirt.jpg")
+		listNum := c.DefaultQuery("list", "0")
+		num, err := strconv.Atoi(listNum)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Num"})
+			return
+		}
+		img, err := Crawler.GetAlertConflict(Crawler.GetUser(), int64(num))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			return
+		}
+		// Set the correct content-type for the image
+		c.Header("Content-Type", "application/octet-stream")
+
+		// Return the image data
+		c.Data(http.StatusOK, "application/octet-stream", img)
+
 	})
 	rtr.GET("imgRef", Auth.IsAuthenticated, func(c *gin.Context) {
 		c.File("./proxy-image.jpg")
