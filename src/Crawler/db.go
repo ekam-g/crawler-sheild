@@ -161,6 +161,10 @@ func GetAlertImage(customer string, what int64) ([]byte, error) {
 	return []byte(image), nil
 }
 
+func DeleteImageConflict(customer string, what int64) {
+
+}
+
 func GetAlertConflict(customer string, what int64) ([]byte, error) {
 	c := client() // Initialize Redis client
 	defer c.Close()
