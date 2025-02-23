@@ -26,6 +26,21 @@
             </a>
         </div>
     </diV>
+
+
+    <div class="relative flex justify-center items-center w-full h-[80vh] mt-20">
+        <!-- Styled Upload Button -->
+        <a href="/logout" class="cursor-pointer w-2/8 h-1/9 flex justify-center items-center text-3xl
+        bg-[rgba(255,255,255,0.02)] border-2 rounded-3xl border-[rgba(255,0,0,0.06)]
+        hover:border-[rgba(255,0,0,0.11)] hover:bg-[rgba(255,0,0,0.06)] text-white font-semibold py-2 px-6
+        transition-all duration-300">
+            Logout
+        </a>
+
+        <!-- Hidden file input -->
+        <input type="file" name="file" id="file-upload" class="hidden" accept="image/*" required hx-trigger="change" hx-target="#response" hx-swap="outerHTML">
+    </div>
+
 </body>
 </html>
 {{ end }}
