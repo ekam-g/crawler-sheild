@@ -1,8 +1,14 @@
 package main
 
 import (
+	"bytes"
+	"image"
+	"image/gif"
+	"image/jpeg"
+	"image/png"
 	"log"
 	"net/http"
+	"strconv"
 	"path/filepath"
 	"strings"
 
@@ -39,11 +45,128 @@ func main() {
 		c.HTML(http.StatusOK, "upload/upload.gohtml", gin.H{})
 	})
 
-	rtr.GET("imgAlert", Auth.IsAuthenticated, func(c *gin.Context) {
-		c.File("./shirt.jpg")
-	})
 	rtr.GET("imgRef", Auth.IsAuthenticated, func(c *gin.Context) {
-		c.File("./proxy-image.jpg")
+		listNum := c.DefaultQuery("list", "0")
+		num, err := strconv.Atoi(listNum)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Num"})
+			return
+		}
+		img, err := Crawler.GetAlertConflict(Crawler.GetUser(), int64(num))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			return
+		}
+
+		// Decode the image to detect its type
+		decodedImg, format, err := image.Decode(bytes.NewReader(img))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to decode image"})
+			return
+		}
+
+		// Set the correct Content-Type based on the image format
+		var contentType string
+		switch format {
+		case "jpeg":
+			contentType = "image/jpeg"
+		case "png":
+			contentType = "image/png"
+		case "gif":
+			contentType = "image/gif"
+		default:
+			contentType = "application/octet-stream"
+		}
+
+		// Set the content type header to the detected type
+		c.Header("Content-Type", contentType)
+
+		// Set Content-Disposition to 'inline' so that the browser will display the image
+		c.Header("Content-Disposition", "inline; filename=image."+format)
+
+		// Encode the image back to the appropriate format and send it as the response
+		var buf bytes.Buffer
+		switch format {
+		case "jpeg":
+			err = jpeg.Encode(&buf, decodedImg, nil)
+		case "png":
+			err = png.Encode(&buf, decodedImg)
+		case "gif":
+			// If it's a GIF, encode accordingly (you can add more formats as needed)
+			err = gif.Encode(&buf, decodedImg, nil)
+		default:
+			err = nil
+		}
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to encode image"})
+			return
+		}
+
+		// Return the image data
+		c.Data(http.StatusOK, contentType, buf.Bytes())
+	})
+
+	rtr.GET("imgAlert", Auth.IsAuthenticated, func(c *gin.Context) {
+		listNum := c.DefaultQuery("list", "0")
+		num, err := strconv.Atoi(listNum)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Num"})
+			return
+		}
+		img, err := Crawler.GetAlertImage(Crawler.GetUser(), int64(num))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			return
+		}
+
+		// Decode the image to detect its type
+		decodedImg, format, err := image.Decode(bytes.NewReader(img))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to decode image"})
+			return
+		}
+
+		// Set the correct Content-Type based on the image format
+		var contentType string
+		switch format {
+		case "jpeg":
+			contentType = "image/jpeg"
+		case "png":
+			contentType = "image/png"
+		case "gif":
+			contentType = "image/gif"
+		default:
+			contentType = "application/octet-stream"
+		}
+
+		// Set the content type header to the detected type
+		c.Header("Content-Type", contentType)
+
+		// Set Content-Disposition to 'inline' so that the browser will display the image
+		c.Header("Content-Disposition", "inline; filename=image."+format)
+
+		// Encode the image back to the appropriate format and send it as the response
+		var buf bytes.Buffer
+		switch format {
+		case "jpeg":
+			err = jpeg.Encode(&buf, decodedImg, nil)
+		case "png":
+			err = png.Encode(&buf, decodedImg)
+		case "gif":
+			// If it's a GIF, encode accordingly (you can add more formats as needed)
+			err = gif.Encode(&buf, decodedImg, nil)
+		default:
+			err = nil
+		}
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to encode image"})
+			return
+		}
+
+		// Return the image data
+		c.Data(http.StatusOK, contentType, buf.Bytes())
 	})
 	rtr.GET("/load-alert<>", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Return just a part of the page (template alert)
