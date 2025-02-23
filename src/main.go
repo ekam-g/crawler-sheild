@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/base64"
 	"image"
 	"image/gif"
 	"image/jpeg"
@@ -43,12 +44,75 @@ func main() {
 		c.File("./assets/images/crawler-logo.png") // Correct path to your image
 	})
 	rtr.GET("/library", Auth.IsAuthenticated, func(c *gin.Context) {
+		// Fetch image byte arrays
+		data, err := Crawler.GetAllImagesForCustomer(Crawler.GetUser())
+		if err != nil {
+			log.Fatalf("Error fetching images: %v", err)
+		}
+
+		var goodImages [][]byte
+		var base64Images []string // To store the Base64-encoded images
+
+		for x := 0; x < len(data); x++ {
+			img := data[x]
+			// Decode the image to detect its type
+			decodedImg, format, err := image.Decode(bytes.NewReader(img))
+			if err != nil {
+				// Log the error for invalid images and continue
+				log.Printf("Failed to decode image at index %d: %v", x, err)
+				continue
+			}
+
+			// Set the correct Content-Type based on the image format
+			var contentType string
+			switch format {
+			case "jpeg":
+				contentType = "image/jpeg"
+			case "png":
+				contentType = "image/png"
+			case "gif":
+				contentType = "image/gif"
+			default:
+				contentType = "application/octet-stream"
+			}
+
+			// Set Content-Disposition to 'inline' so that the browser will display the image
+			c.Header("Content-Type", contentType)
+			c.Header("Content-Disposition", "inline; filename=image."+format)
+
+			// Encode the image back to the appropriate format and send it as the response
+			var buf bytes.Buffer
+			switch format {
+			case "jpeg":
+				err = jpeg.Encode(&buf, decodedImg, nil)
+			case "png":
+				err = png.Encode(&buf, decodedImg)
+			case "gif":
+				// If it's a GIF, encode accordingly (you can add more formats as needed)
+				err = gif.Encode(&buf, decodedImg, nil)
+			default:
+				err = nil
+			}
+
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to encode image"})
+				return
+			}
+
+			// Append valid images to the goodImages slice
+			goodImages = append(goodImages, buf.Bytes())
+
+			// Convert image to Base64 for passing to the template
+			base64Img := base64.StdEncoding.EncodeToString(buf.Bytes())
+			base64Images = append(base64Images, base64Img)
+		}
 
 		// Pass the encoded images to the template
 		c.HTML(http.StatusOK, "library/libraryPage.gohtml", gin.H{
-			"imgs": "l",
+			"imgs": base64Images, // Use base64-encoded images
 		})
 	})
+
 	rtr.GET("settings", Auth.IsAuthenticated, func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home/settings.gohtml", gin.H{})
 	})
