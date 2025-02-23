@@ -280,7 +280,7 @@ func main() {
 
 	rtr.POST("/uploadFile", Auth.IsAuthenticated, func(c *gin.Context) {
 		// Get the file from the form input
-		file, err := c.FormFile("file")
+		file, err := c.FormFile("upload")
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded" + err.Error()})
 			return

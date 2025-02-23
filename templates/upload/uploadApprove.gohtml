@@ -1,6 +1,6 @@
 {{ define "upload/uploadApprove.gohtml" }}
     <div id="center">
-        <form hx-post="/upload" hx-target="#response" hx-swap="outerHTML" enctype="multipart/form-data">
+        <form hx-post="/uploadFile" hx-target="#response" hx-swap="outerHTML" enctype="multipart/form-data">
             <div class="relative flex justify-center items-center w-full h-[80vh] mt-20">
                 <!-- Uploaded Image -->
                 <label for="file-upload" class="cursor-pointer w-2/3 h-3/4 flex justify-center items-center text-3xl
