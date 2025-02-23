@@ -224,6 +224,10 @@ func DeleteImageCustomer(customer string, what int64) error {
 	if err != nil {
 		return err
 	}
+	_, err = c.SRem(ctx, customer+"imagealertsdup", image).Result()
+	if err != nil {
+		return err
+	}
 	err = c.LRem(ctx, fmt.Sprintf("%s:%s", customer, IMGNAME), 1, image).Err()
 	if err != nil {
 		return err
