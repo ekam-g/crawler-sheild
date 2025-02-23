@@ -126,14 +126,14 @@ func AlertUser(customer string, image, customerimage []byte, source string) erro
 	defer cancel() // Ensure context is canceled after use
 	len, err := c.SAdd(ctx, customer+"imagealerts", image).Result()
 	if err != nil {
-		return fmt.Errorf("failed to store image: %w", err)
+		return err
 	}
 	if len == 0 {
 		return errors.New("image Already Added")
 	}
 	err = c.LPush(ctx, customer+"imagealertsconflict", customerimage).Err()
 	if err != nil {
-		return fmt.Errorf("failed to store image: %w", err)
+		return err
 	}
 	err = c.LPush(ctx, customer+"alert", source+","+formatUnixTime(getCurrentUnixTime())).Err()
 	if err != nil {
@@ -164,9 +164,9 @@ func GetAlertConflict(customer string, what int64) ([]byte, error) {
 	defer cancel()
 
 	// Get all images from the list
-	image, err := c.LIndex(ctx, customer+"imageconflict", what).Result()
+	image, err := c.LIndex(ctx, customer+"imagealertsconflict", what).Result()
 	if err != nil {
-		return nil, fmt.Errorf("failed to retrieve images: %w", err)
+		return nil, err
 	}
 
 	return []byte(image), nil
