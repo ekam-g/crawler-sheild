@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -23,6 +24,7 @@ func client() *redis.Client {
 }
 
 func AddImageAmazon(url string) error {
+	log.Println("Added Amazon URL: " + url)
 	c := client()
 	defer c.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)

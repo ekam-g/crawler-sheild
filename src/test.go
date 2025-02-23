@@ -1,15 +1,24 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/RedactedDog/crawler/src/Crawler"
+	"github.com/RedactedDog/crawler/src/Crawler/Amazon"
 )
 
 func main() {
-	addFileAmazon()
-	addFileUser()
+	data, err := Amazon.FindTop50("cool")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	for x := 0; x < len(data); x += 1 {
+		fmt.Println(data[x].ImageURL)
+	}
+	// addFileAmazon()
+	// addFileUser()
 }
 
 func addFileAmazon() {
