@@ -1,0 +1,16 @@
+{{ define "upload/uploadApprove.gohtml" }}
+    <div id="center">
+        <form hx-post="/upload" hx-target="#response" hx-swap="outerHTML" enctype="multipart/form-data">
+            <div class="relative flex justify-center items-center w-full h-[80vh] mt-20">
+                <!-- Uploaded Image -->
+                <img src="" class="cursor-pointer w-2/3 h-3/4 flex justify-center items-center text-3xl
+                bg-[rgba(255,255,255,0.02)] border-2 rounded-3xl border-[rgba(255,255,255,0.06)]
+                hover:border-[#0784b5] hover:bg-[rgba(255,255,255,0.06)] text-white font-semibold py-2 px-6
+                transition-all duration-300" alt="">
+                    
+                <!-- Hidden file input -->
+                
+            </div>
+        </form>
+    </div>
+{{ end }}
