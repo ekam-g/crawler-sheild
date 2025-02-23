@@ -202,6 +202,14 @@ func DeleteImageConflict(customer string, what int64) error {
 	if err != nil {
 		return err
 	}
+	strData, err := c.LIndex(ctx, customer+"alert", what).Result()
+	if err != nil {
+		return err
+	}
+	err = c.LRem(ctx, customer+"alert", 1, strData).Err()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
