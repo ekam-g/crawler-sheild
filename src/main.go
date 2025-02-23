@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"encoding/base64"
 	"image"
 	"image/gif"
 	"image/jpeg"
@@ -44,22 +43,10 @@ func main() {
 		c.File("./assets/images/crawler-logo.png") // Correct path to your image
 	})
 	rtr.GET("/library", Auth.IsAuthenticated, func(c *gin.Context) {
-		// Fetch image byte arrays
-		data, err := Crawler.GetAllImagesForCustomer(Crawler.GetUser())
-		if err != nil {
-			log.Fatalf("Error fetching images: %v", err)
-		}
-
-		// Convert each image byte array to a base64-encoded string
-		var base64Images []string
-		for _, imgData := range data {
-			base64Str := base64.StdEncoding.EncodeToString(imgData)
-			base64Images = append(base64Images, "data:image/png;base64,"+base64Str) // Ensure the correct MIME type
-		}
 
 		// Pass the encoded images to the template
 		c.HTML(http.StatusOK, "library/libraryPage.gohtml", gin.H{
-			"imgs": base64Images,
+			"imgs": "l",
 		})
 	})
 	rtr.GET("settings", Auth.IsAuthenticated, func(c *gin.Context) {
@@ -231,26 +218,26 @@ func main() {
 		// Get the file from the form input
 		file, err := c.FormFile("file")
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded" + err.Error()})
 			return
 		}
 		if file == nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "No file uploaded"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "No file uploaded" + err.Error()})
 			return
 		}
 		ext := strings.ToLower(filepath.Ext(file.Filename))
 		if ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif" {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file type. Only image files are allowed."})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file type. Only image files are allowed." + err.Error()})
 			return
 		}
 		byteFile, err := file.Open()
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded" + err.Error()})
 			return
 		}
 		data, err := io.ReadAll(byteFile)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad file uploaded" + err.Error()})
 			return
 		}
 		Crawler.AddImageCustomer(data, Crawler.GetUser())
