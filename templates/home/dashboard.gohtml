@@ -36,20 +36,8 @@
                 {{.name}}'s Alerts
             </h1>
 
-            <div class="bg-[rgba(255,255,255,0.06)] h-[calc(100vh-10rem)] max-w-[27rem] w-full fixed top-31
-            rounded-bl-3xl left-5 flex flex-col items-center py-3 space-y-3 overflow-y-scroll">
 
-                <button hx-get="/load-alert" hx-target="#alert" hx-swap="outerHTML"
-                        class="cursor-pointer w-7/8 h-[70px] shrink-0 py-2 flex justify-between items-start
-                        border-0 text-nowrap text-[#5d8c9e] bg-[rgba(255,255,255,0.06)] rounded-3xl
-                        hover:bg-[rgba(255,255,255,0.11)] hover:rounded-xl
-                        transition-all duration-100 ease-linear">
-                    <div class="flex flex-col">
-                        <span class="text-lg font-bold text-[#5d8c9e]">&nbsp;&nbsp;WEBSITE</span>
-                    </div>
-                    <span class="text-sm text-gray-500 self-center">TIMESTAMP&nbsp;</span>
-                </button>
-            </div>
+            <div id="alist" hx-get="/alert-list" hx-trigger="load"></div>
 
             <div id="alert" class="bg-[rgba(255,255,255,0.02)] h-[calc(100vh-10rem)] max-w-[calc(100vw-30rem)] w-full
             fixed right-5 top-31 font-bold text-gray-100 rounded-br-3xl
