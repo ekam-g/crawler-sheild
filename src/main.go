@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/base64"
 	"image"
 	"image/gif"
 	"image/jpeg"
@@ -41,6 +42,25 @@ func main() {
 	})
 	rtr.GET("/favicon.ico", func(c *gin.Context) {
 		c.File("./assets/images/crawler-logo.png") // Correct path to your image
+	})
+	rtr.GET("/library", Auth.IsAuthenticated, func(c *gin.Context) {
+		// Fetch image byte arrays
+		data, err := Crawler.GetAllImagesForCustomer(Crawler.GetUser())
+		if err != nil {
+			log.Fatalf("Error fetching images: %v", err)
+		}
+
+		// Convert each image byte array to a base64-encoded string
+		var base64Images []string
+		for _, imgData := range data {
+			base64Str := base64.StdEncoding.EncodeToString(imgData)
+			base64Images = append(base64Images, "data:image/png;base64,"+base64Str) // Ensure the correct MIME type
+		}
+
+		// Pass the encoded images to the template
+		c.HTML(http.StatusOK, "library/libraryPage.gohtml", gin.H{
+			"imgs": base64Images,
+		})
 	})
 	rtr.GET("settings", Auth.IsAuthenticated, func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home/settings.gohtml", gin.H{})
