@@ -1,13 +1,14 @@
 {{ define "upload/upload.gohtml" }}
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="/assets/output.css" rel="stylesheet">
-        <title>Login</title>
-    </head>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/assets/output.css" rel="stylesheet">
+    <title>Login</title>
+</head>
 
-    <body class="bg-[#121212]">
+<body class="bg-[#121212]">
+
     <div class="fixed top-0 w-full h-full">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 bg-[#2a2a2a]
         relative flex h-16 items-center justify-between rounded-b-3xl ">
@@ -18,14 +19,29 @@
             <a href="/dashboard"  class="m-button h-1/2">
                 &nbsp;<img src="/assets/images/dashboard-icon.png" class="h-5/6" alt="Dashboard">Dashboard&nbsp;
             </a>
-            <a href="/upload" class="m-button h-1/2">
+            <a href="/upload" class="m-button h-1/2 bg-[rgba(255,255,255,0.11)] rounded-xl">
                 &nbsp;<img src="/assets/images/upload-icon.png" class="h-3/5" alt="Upload">Upload&nbsp;
             </a>
-            <a href="/settings" class="m-button h-1/2 bg-[rgba(255,255,255,0.11)] rounded-xl">
+            <a href="/settings" class="m-button h-1/2">
                 &nbsp;<img src="/assets/images/settings-icon.png" class="h-3/5" alt="Settings">&nbsp;Settings&nbsp;
             </a>
         </div>
     </diV>
-    </body>
-    </html>
+
+    <form hx-post="/upload" hx-target="#response" hx-swap="outerHTML" enctype="multipart/form-data">
+        <div class="relative flex justify-center items-center w-full h-[80vh] mt-20">
+            <!-- Styled Upload Button -->
+            <label for="file-upload" class="cursor-pointer w-2/3 h-3/4 flex justify-center items-center text-3xl
+            bg-[rgba(255,255,255,0.02)] border-2 rounded-3xl border-[rgba(255,255,255,0.06)]
+            hover:border-[#0784b5] hover:bg-[rgba(255,255,255,0.06)] text-white font-semibold py-2 px-6
+            transition-all duration-300">
+                Upload File
+            </label>
+
+            <!-- Hidden file input -->
+            <input type="file" name="file" id="file-upload" class="hidden" accept="image/*" required hx-trigger="change" hx-target="#response" hx-swap="outerHTML">
+        </div>
+    </form>
+</body>
+</html>
 {{ end }}

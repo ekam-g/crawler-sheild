@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
+	"path/filepath"
+	"strings"
 
 	"github.com/RedactedDog/crawler/src/Auth"
 	"github.com/RedactedDog/crawler/src/Crawler"
@@ -62,6 +64,21 @@ func main() {
 		c.HTML(200, "home/alert-list.gohtml", gin.H{
 			"alerts": data,
 		})
+	})
+
+	rtr.GET("/upload-file", Auth.IsAuthenticated, func(c *gin.Context) {
+		// Get the file from the form input
+		file, _ := c.FormFile("file")
+		if file == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "No file uploaded"})
+			return
+		}
+
+		ext := strings.ToLower(filepath.Ext(file.Filename))
+		if ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file type. Only image files are allowed."})
+			return
+		}
 	})
 	// rtr.GET("user", Auth.IsAuthenticated, func(ctx *gin.Context) {
 
